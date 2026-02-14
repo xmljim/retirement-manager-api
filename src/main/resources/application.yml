@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: retirement-manager-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/retirement
+    username: retirement
+    password: retirement
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+
+logging:
+  level:
+    com.xmljim.retirement: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
