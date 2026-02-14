@@ -9,8 +9,10 @@ Retirement Manager API - Java 25 + Spring Boot REST API for retirement lifecycle
 ## Build & Run
 
 ```bash
-# Start PostgreSQL
+# Start PostgreSQL (Docker or Podman)
 docker compose up -d
+# Or with Podman:
+podman-compose up -d
 
 # Run the application
 ./gradlew bootRun
@@ -70,7 +72,9 @@ bd sync               # Sync with git
 
 ## API Documentation
 
-When running locally: http://localhost:8080/swagger-ui.html
+When running locally:
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- OpenAPI JSON: http://localhost:8080/api-docs (used for client generation)
 
 ## Database
 
