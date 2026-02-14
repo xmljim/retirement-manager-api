@@ -47,7 +47,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // SpotBugs annotations
-    compileOnly("com.github.spotbugs:spotbugs-annotations:4.9.3")
+    compileOnly("com.github.spotbugs:spotbugs-annotations:4.9.8")
 }
 
 // JUnit 5
@@ -58,7 +58,7 @@ tasks.withType<Test> {
 
 // PMD
 pmd {
-    toolVersion = "7.12.0"
+    toolVersion = "7.16.0"
     isConsoleOutput = true
     ruleSetFiles = files("config/pmd/ruleset.xml")
     ruleSets = listOf()
@@ -73,7 +73,7 @@ tasks.withType<Pmd> {
 
 // SpotBugs
 spotbugs {
-    toolVersion = "4.9.3"
+    toolVersion = "4.9.8"
     excludeFilter = file("config/spotbugs/exclude.xml")
 }
 
@@ -111,10 +111,10 @@ tasks.jacocoTestCoverageVerification {
     }
 }
 
-// Checkstyle - Sun/Oracle conventions
+// Checkstyle - Sun/Oracle conventions with 120 char line length
 checkstyle {
     toolVersion = "10.23.1"
-    config = resources.text.fromUri("https://raw.githubusercontent.com/checkstyle/checkstyle/checkstyle-10.23.1/src/main/resources/sun_checks.xml")
+    configFile = file("config/checkstyle/checkstyle.xml")
     isIgnoreFailures = false
 }
 
