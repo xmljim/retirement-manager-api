@@ -2,7 +2,7 @@ spring:
   application:
     name: retirement-manager-api
   datasource:
-    url: jdbc:postgresql://localhost:5432/retirement
+    url: jdbc:postgresql://localhost:5433/retirement
     username: retirement
     password: retirement
   jpa:
