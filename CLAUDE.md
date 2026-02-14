@@ -4,7 +4,7 @@ This file provides guidance to Claude Code when working with this repository.
 
 ## Project Overview
 
-Retirement Manager API - Java 25 + Spring Boot REST API for retirement lifecycle management.
+Retirement Manager API - Java 25 + Spring Boot 4.0 REST API for retirement lifecycle management.
 
 ## Build & Run
 
@@ -43,7 +43,7 @@ Quality tool configurations:
 - PMD: `config/pmd/ruleset.xml`
 - SpotBugs: `config/spotbugs/exclude.xml`
 - Checkstyle: `config/checkstyle/checkstyle.xml`
-- JaCoCo: Minimum 50% coverage threshold
+- JaCoCo: Minimum 50% coverage threshold (temporarily 0% for bootstrap)
 
 ## Issue Tracking
 
@@ -78,7 +78,7 @@ When running locally:
 
 ## Database
 
-PostgreSQL via Docker Compose. Migrations managed by Flyway.
+PostgreSQL 17 via Docker/Podman Compose on port 5433. Migrations managed by Flyway.
 
 ## Related Repository
 
