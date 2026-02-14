@@ -22,6 +22,39 @@ docker compose up -d
 ./gradlew build
 ```
 
+## Quality Gates
+
+**IMPORTANT:** Run quality gates before committing code changes.
+
+```bash
+# Run all quality checks (PMD, SpotBugs, Checkstyle, JaCoCo, tests)
+./gradlew qualityGate
+
+# Or run individual checks:
+./gradlew pmdMain pmdTest           # Static analysis
+./gradlew spotbugsMain spotbugsTest # Bug detection
+./gradlew checkstyleMain checkstyleTest  # Code style
+./gradlew test jacocoTestReport     # Tests with coverage
+```
+
+Quality tool configurations:
+- PMD: `config/pmd/ruleset.xml`
+- SpotBugs: `config/spotbugs/exclude.xml`
+- Checkstyle: `config/checkstyle/checkstyle.xml`
+- JaCoCo: Minimum 50% coverage threshold
+
+## Issue Tracking
+
+This project uses **beads** for issue tracking.
+
+```bash
+bd ready              # Find available work
+bd show <id>          # View issue details
+bd update <id> --status in_progress  # Claim work
+bd close <id>         # Complete work
+bd sync               # Sync with git
+```
+
 ## Key Locations
 
 - `src/main/java/com/xmljim/retirement/` - Main source code
@@ -33,6 +66,7 @@ docker compose up -d
   - `calc/` - Financial calculations
 - `src/main/resources/db/migration/` - Flyway migrations
 - `src/test/` - Tests (using Testcontainers)
+- `config/` - Quality tool configurations
 
 ## API Documentation
 

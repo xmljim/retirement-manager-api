@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Exclude Spring-generated proxies and configuration classes -->
+    <Match>
+        <Class name="~.*\$\$SpringCGLIB\$\$.*"/>
+    </Match>
+
+    <!-- Exclude Lombok-generated code -->
+    <Match>
+        <Class name="~.*\$\$.*"/>
+    </Match>
+
+    <!-- Exclude test classes from some checks -->
+    <Match>
+        <Class name="~.*Test"/>
+        <Bug pattern="URF_UNREAD_FIELD"/>
+    </Match>
+
+    <!-- Allow Spring @Autowired fields -->
+    <Match>
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+        <Or>
+            <Annotation name="org.springframework.beans.factory.annotation.Autowired"/>
+            <Annotation name="jakarta.inject.Inject"/>
+        </Or>
+    </Match>
+</FindBugsFilter>
