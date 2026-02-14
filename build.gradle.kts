@@ -111,10 +111,10 @@ tasks.jacocoTestCoverageVerification {
     }
 }
 
-// Checkstyle
+// Checkstyle - Sun/Oracle conventions
 checkstyle {
     toolVersion = "10.23.1"
-    configFile = file("config/checkstyle/checkstyle.xml")
+    config = resources.text.fromUri("https://raw.githubusercontent.com/checkstyle/checkstyle/checkstyle-10.23.1/src/main/resources/sun_checks.xml")
     isIgnoreFailures = false
 }
 
