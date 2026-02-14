@@ -10,9 +10,16 @@ echo "Running pre-push quality gate..."
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 cd "$PROJECT_ROOT"
 
-# Check if Docker is running for tests (PostgreSQL needed)
-if ! docker info >/dev/null 2>&1; then
-    echo "Warning: Docker not running, skipping integration tests"
+# Check if Docker or Podman is running for tests (PostgreSQL needed)
+container_running=false
+if docker info >/dev/null 2>&1; then
+    container_running=true
+elif podman info >/dev/null 2>&1; then
+    container_running=true
+fi
+
+if [ "$container_running" = false ]; then
+    echo "Warning: Docker/Podman not running, skipping integration tests"
     echo "Running static analysis only..."
     ./gradlew pmdMain pmdTest spotbugsMain checkstyleMain checkstyleTest --quiet
 else
