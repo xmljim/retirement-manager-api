@@ -7,11 +7,9 @@ import com.xmljim.retirement.api.exception.ResourceNotFoundException;
 import com.xmljim.retirement.service.marriage.MarriageService;
 import com.xmljim.retirement.service.person.PersonService;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,10 +49,9 @@ public final class MarriageController implements MarriageOperations {
     }
 
     @Override
-    @PostMapping("/api/v1/persons/{personId}/marriages")
     public ResponseEntity<MarriageDto> createMarriage(
             @PathVariable final UUID personId,
-            @RequestBody final CreateMarriageRequest request) {
+            @Valid @RequestBody final CreateMarriageRequest request) {
         // Verify person exists
         personService.getPersonById(personId)
                 .orElseThrow(() -> new ResourceNotFoundException("Person", personId));
@@ -71,7 +68,6 @@ public final class MarriageController implements MarriageOperations {
     }
 
     @Override
-    @GetMapping("/api/v1/persons/{personId}/marriages")
     public ResponseEntity<List<MarriageDto>> getMarriagesByPersonId(
             @PathVariable final UUID personId) {
         // Verify person exists
@@ -82,17 +78,15 @@ public final class MarriageController implements MarriageOperations {
     }
 
     @Override
-    @PutMapping("/api/v1/marriages/{id}")
     public ResponseEntity<MarriageDto> updateMarriage(
             @PathVariable final UUID id,
-            @RequestBody final UpdateMarriageRequest request) {
+            @Valid @RequestBody final UpdateMarriageRequest request) {
         return marriageService.updateMarriage(id, request)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Marriage", id));
     }
 
     @Override
-    @GetMapping("/api/v1/marriages/{id}")
     public ResponseEntity<MarriageDto> getMarriageById(@PathVariable final UUID id) {
         return marriageService.getMarriageById(id)
                 .map(ResponseEntity::ok)

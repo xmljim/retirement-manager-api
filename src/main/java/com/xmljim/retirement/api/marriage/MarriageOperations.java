@@ -13,7 +13,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -60,6 +63,7 @@ public interface MarriageOperations {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
+    @PostMapping("/api/v1/persons/{personId}/marriages")
     ResponseEntity<MarriageDto> createMarriage(
             @Parameter(description = "Person ID", required = true)
             @PathVariable UUID personId,
@@ -86,6 +90,7 @@ public interface MarriageOperations {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
+    @GetMapping("/api/v1/persons/{personId}/marriages")
     ResponseEntity<List<MarriageDto>> getMarriagesByPersonId(
             @Parameter(description = "Person ID", required = true)
             @PathVariable UUID personId);
@@ -118,6 +123,7 @@ public interface MarriageOperations {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
+    @PutMapping("/api/v1/marriages/{id}")
     ResponseEntity<MarriageDto> updateMarriage(
             @Parameter(description = "Marriage ID", required = true)
             @PathVariable UUID id,
@@ -145,6 +151,7 @@ public interface MarriageOperations {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
+    @GetMapping("/api/v1/marriages/{id}")
     ResponseEntity<MarriageDto> getMarriageById(
             @Parameter(description = "Marriage ID", required = true)
             @PathVariable UUID id);

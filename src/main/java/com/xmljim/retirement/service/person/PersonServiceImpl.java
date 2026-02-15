@@ -6,6 +6,8 @@ import com.xmljim.retirement.api.dto.person.UpdatePersonRequest;
 import com.xmljim.retirement.domain.person.FilingStatus;
 import com.xmljim.retirement.domain.person.Person;
 import com.xmljim.retirement.repository.person.PersonRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,10 +60,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonDto> getAllPersons() {
-        return personRepository.findAll().stream()
-                .map(PersonDto::fromEntity)
-                .toList();
+    public Page<PersonDto> getAllPersons(final Pageable pageable) {
+        return personRepository.findAll(pageable)
+                .map(PersonDto::fromEntity);
     }
 
     @Override

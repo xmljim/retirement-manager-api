@@ -5,6 +5,10 @@ import com.xmljim.retirement.api.dto.person.PersonDto;
 import com.xmljim.retirement.api.dto.person.UpdatePersonRequest;
 import com.xmljim.retirement.domain.person.FilingStatus;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,11 +40,12 @@ public interface PersonService {
     Optional<PersonDto> getPersonById(UUID id);
 
     /**
-     * Retrieves all persons.
+     * Retrieves all persons with pagination.
      *
-     * @return list of all person DTOs
+     * @param pageable pagination parameters
+     * @return page of person DTOs
      */
-    List<PersonDto> getAllPersons();
+    Page<PersonDto> getAllPersons(Pageable pageable);
 
     /**
      * Retrieves persons by last name.
@@ -84,5 +89,5 @@ public interface PersonService {
      * @return true if a matching person exists
      */
     boolean existsByNameAndDateOfBirth(String firstName, String lastName,
-                                        java.time.LocalDate dateOfBirth);
+                                        LocalDate dateOfBirth);
 }

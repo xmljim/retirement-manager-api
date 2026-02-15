@@ -5,6 +5,7 @@ import com.xmljim.retirement.domain.person.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,5 +54,5 @@ public interface PersonRepository extends JpaRepository<Person, UUID> {
     boolean existsByFirstNameAndLastNameAndDateOfBirth(
             String firstName,
             String lastName,
-            java.time.LocalDate dateOfBirth);
+            LocalDate dateOfBirth);
 }

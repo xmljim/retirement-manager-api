@@ -13,7 +13,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ import java.util.List;
  * @since 1.0
  */
 @Tag(name = "Contribution Limits", description = "IRS contribution limits and phase-out ranges")
+@RequestMapping("/api/v1/limits")
 public interface LimitsOperations {
 
     /**
@@ -52,6 +55,7 @@ public interface LimitsOperations {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
+    @GetMapping("/{year}")
     ResponseEntity<YearlyLimitsDto> getLimitsByYear(
             @Parameter(description = "Tax year (e.g., 2025)", required = true, example = "2025")
             @PathVariable Integer year);
@@ -79,6 +83,7 @@ public interface LimitsOperations {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
+    @GetMapping("/{year}/{accountType}")
     ResponseEntity<AccountTypeLimitsDto> getLimitsByYearAndAccountType(
             @Parameter(description = "Tax year (e.g., 2025)", required = true, example = "2025")
             @PathVariable Integer year,
@@ -102,5 +107,6 @@ public interface LimitsOperations {
                     implementation = Integer.class, example = "2025")))
         )
     })
+    @GetMapping("/years")
     ResponseEntity<List<Integer>> getAvailableYears();
 }

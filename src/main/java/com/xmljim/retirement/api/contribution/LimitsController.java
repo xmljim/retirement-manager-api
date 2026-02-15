@@ -6,9 +6,7 @@ import com.xmljim.retirement.api.exception.DataNotFoundException;
 import com.xmljim.retirement.domain.contribution.AccountType;
 import com.xmljim.retirement.service.contribution.ContributionLimitsService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,7 +21,6 @@ import java.util.List;
  * @since 1.0
  */
 @RestController
-@RequestMapping("/api/v1/limits")
 public final class LimitsController implements LimitsOperations {
 
     /** The contribution limits service. */
@@ -39,7 +36,6 @@ public final class LimitsController implements LimitsOperations {
     }
 
     @Override
-    @GetMapping("/{year}")
     public ResponseEntity<YearlyLimitsDto> getLimitsByYear(@PathVariable final Integer year) {
         return limitsService.getLimitsByYear(year)
                 .map(ResponseEntity::ok)
@@ -48,7 +44,6 @@ public final class LimitsController implements LimitsOperations {
     }
 
     @Override
-    @GetMapping("/{year}/{accountType}")
     public ResponseEntity<AccountTypeLimitsDto> getLimitsByYearAndAccountType(
             @PathVariable final Integer year,
             @PathVariable final AccountType accountType) {
@@ -60,7 +55,6 @@ public final class LimitsController implements LimitsOperations {
     }
 
     @Override
-    @GetMapping("/years")
     public ResponseEntity<List<Integer>> getAvailableYears() {
         return ResponseEntity.ok(limitsService.getAvailableYears());
     }

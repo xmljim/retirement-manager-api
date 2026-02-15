@@ -13,6 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -117,13 +120,16 @@ class PersonServiceImplTest {
     class GetAllPersonsTests {
 
         @Test
-        @DisplayName("should return all persons")
-        void shouldReturnAllPersons() {
-            when(personRepository.findAll()).thenReturn(List.of(samplePerson));
+        @DisplayName("should return paginated persons")
+        void shouldReturnPaginatedPersons() {
+            var pageable = PageRequest.of(0, 10);
+            var page = new PageImpl<>(List.of(samplePerson), pageable, 1);
+            when(personRepository.findAll(any(Pageable.class))).thenReturn(page);
 
-            var result = personService.getAllPersons();
+            var result = personService.getAllPersons(pageable);
 
-            assertEquals(1, result.size());
+            assertEquals(1, result.getTotalElements());
+            assertEquals(1, result.getContent().size());
         }
     }
 

@@ -12,11 +12,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -29,6 +35,7 @@ import java.util.UUID;
  * @since 1.0
  */
 @Tag(name = "Persons", description = "Person management operations")
+@RequestMapping("/api/v1/persons")
 public interface PersonOperations {
 
     /**
@@ -53,6 +60,7 @@ public interface PersonOperations {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
+    @PostMapping
     ResponseEntity<PersonDto> createPerson(
             @Valid @RequestBody CreatePersonRequest request);
 
@@ -78,18 +86,20 @@ public interface PersonOperations {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
+    @GetMapping("/{id}")
     ResponseEntity<PersonDto> getPersonById(
             @Parameter(description = "Person ID", required = true)
             @PathVariable UUID id);
 
     /**
-     * Retrieves all persons in the system.
+     * Retrieves all persons in the system with pagination.
      *
-     * @return list of all persons
+     * @param pageable pagination parameters
+     * @return page of persons
      */
     @Operation(
         summary = "List all persons",
-        description = "Retrieves all persons in the retirement planning system"
+        description = "Retrieves all persons in the retirement planning system with pagination"
     )
     @ApiResponses({
         @ApiResponse(
@@ -97,7 +107,10 @@ public interface PersonOperations {
             description = "Persons retrieved successfully"
         )
     })
-    ResponseEntity<List<PersonDto>> getAllPersons();
+    @GetMapping
+    ResponseEntity<Page<PersonDto>> getAllPersons(
+            @Parameter(description = "Pagination parameters")
+            Pageable pageable);
 
     /**
      * Updates an existing person's information.
@@ -127,6 +140,7 @@ public interface PersonOperations {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
+    @PutMapping("/{id}")
     ResponseEntity<PersonDto> updatePerson(
             @Parameter(description = "Person ID", required = true)
             @PathVariable UUID id,
@@ -153,6 +167,7 @@ public interface PersonOperations {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
+    @DeleteMapping("/{id}")
     ResponseEntity<Void> deletePerson(
             @Parameter(description = "Person ID", required = true)
             @PathVariable UUID id);
