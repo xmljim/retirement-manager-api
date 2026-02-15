@@ -7,7 +7,7 @@ spring:
     password: retirement
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     open-in-view: false
     properties:
       hibernate:

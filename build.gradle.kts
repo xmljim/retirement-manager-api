@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.4.2"
+    id("org.springframework.boot") version "4.0.2"
     id("io.spring.dependency-management") version "1.1.7"
     pmd
     id("com.github.spotbugs") version "6.1.7"
@@ -19,6 +19,16 @@ java {
 
 repositories {
     mavenCentral()
+}
+
+// Force ASM 9.9.1 for Java 25 compatibility (class file version 69)
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.ow2.asm") {
+            useVersion("9.9.1")
+            because("Java 25 requires ASM 9.9+")
+        }
+    }
 }
 
 dependencies {
@@ -41,19 +51,32 @@ dependencies {
 
     // Testing - JUnit 5
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:junit-jupiter:1.20.4")
+    testImplementation("org.testcontainers:postgresql:1.20.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // SpotBugs annotations
     compileOnly("com.github.spotbugs:spotbugs-annotations:4.9.8")
+
+    // Force latest byte-buddy and ASM for Java 25 compatibility
+    testImplementation("net.bytebuddy:byte-buddy:1.17.1")
+    testImplementation("net.bytebuddy:byte-buddy-agent:1.17.1")
+    testImplementation("org.ow2.asm:asm:9.9.1")
 }
 
 // JUnit 5
 tasks.withType<Test> {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
+    // Required for Mockito with Java 21+
+    jvmArgs(
+        "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+        "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED",
+        "--add-opens", "java.base/java.util=ALL-UNNAMED",
+        "-XX:+EnableDynamicAgentLoading"
+    )
 }
 
 // PMD

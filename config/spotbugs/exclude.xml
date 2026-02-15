@@ -24,4 +24,14 @@
             <Annotation name="jakarta.inject.Inject"/>
         </Or>
     </Match>
+
+    <!-- Exclude JPA entity internal representation warnings -->
+    <!-- LocalDate, Instant are immutable; JPA entities require mutable fields -->
+    <Match>
+        <Class name="~com\.xmljim\.retirement\.domain\..*"/>
+        <Or>
+            <Bug pattern="EI_EXPOSE_REP"/>
+            <Bug pattern="EI_EXPOSE_REP2"/>
+        </Or>
+    </Match>
 </FindBugsFilter>

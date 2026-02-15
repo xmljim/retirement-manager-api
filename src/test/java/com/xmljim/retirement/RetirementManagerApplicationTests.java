@@ -3,9 +3,9 @@ package com.xmljim.retirement;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -22,10 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @SpringBootTest
 @Testcontainers
+@ActiveProfiles("test")
 class RetirementManagerApplicationTests {
 
     /** PostgreSQL test container for integration tests. */
     @Container
+    @ServiceConnection
     private static final PostgreSQLContainer<?> POSTGRES =
             new PostgreSQLContainer<>("postgres:17")
                     .withDatabaseName("retirement")
@@ -35,18 +37,6 @@ class RetirementManagerApplicationTests {
     /** The Spring application context. */
     @Autowired
     private ApplicationContext applicationContext;
-
-    /**
-     * Configures dynamic properties for the test container.
-     *
-     * @param registry the dynamic property registry
-     */
-    @DynamicPropertySource
-    static void configureProperties(final DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
-        registry.add("spring.datasource.username", POSTGRES::getUsername);
-        registry.add("spring.datasource.password", POSTGRES::getPassword);
-    }
 
     /**
      * Verifies that the Spring application context loads successfully.
