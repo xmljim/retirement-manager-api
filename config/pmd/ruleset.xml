@@ -4,43 +4,50 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
-    <description>PMD rules for Retirement Manager API</description>
+    <description>PMD rules for Retirement Manager API - Strict with justified exclusions</description>
+
+    <!-- Test code is relaxed (matches checkstyle approach) -->
+    <exclude-pattern>.*/src/test/.*</exclude-pattern>
 
     <!-- Best Practices -->
-    <rule ref="category/java/bestpractices.xml">
-        <exclude name="GuardLogStatement"/>
-    </rule>
+    <rule ref="category/java/bestpractices.xml"/>
 
     <!-- Code Style -->
     <rule ref="category/java/codestyle.xml">
+        <!-- Records and Spring beans don't need explicit constructors -->
         <exclude name="AtLeastOneConstructor"/>
-        <exclude name="CommentDefaultAccessModifier"/>
-        <exclude name="DefaultPackage"/>
-        <exclude name="OnlyOneReturn"/>
-        <exclude name="TooManyStaticImports"/>
-        <exclude name="LongVariable"/>
+        <!-- Modern Java: var keyword is idiomatic -->
+        <exclude name="UseExplicitTypes"/>
+        <!-- 'id' is a valid name for identifiers; domain terms like MARRIED_FILING_JOINTLY are IRS standard -->
         <exclude name="ShortVariable"/>
-        <exclude name="ShortClassName"/>
+        <exclude name="LongVariable"/>
+        <!-- Early returns improve readability in guard clauses -->
+        <exclude name="OnlyOneReturn"/>
+        <!-- Final on every local variable is verbose; immutability enforced by design -->
+        <exclude name="LocalVariableCouldBeFinal"/>
+        <exclude name="MethodArgumentCouldBeFinal"/>
+        <!-- Package-private is intentional for JPA callbacks -->
+        <exclude name="CommentDefaultAccessModifier"/>
+        <!-- Static imports for test assertions and constants are acceptable -->
+        <exclude name="TooManyStaticImports"/>
     </rule>
 
     <!-- Design -->
     <rule ref="category/java/design.xml">
+        <!-- DTOs/Records are intentionally data-focused -->
+        <exclude name="DataClass"/>
+        <!-- LawOfDemeter too strict for fluent APIs and builders -->
         <exclude name="LawOfDemeter"/>
-        <exclude name="LoosePackageCoupling"/>
-        <exclude name="UseUtilityClass"/>
     </rule>
 
-    <!-- Documentation - relaxed for now -->
+    <!-- Documentation -->
     <rule ref="category/java/documentation.xml">
-        <exclude name="CommentRequired"/>
+        <!-- OpenAPI annotations require verbose documentation -->
         <exclude name="CommentSize"/>
     </rule>
 
     <!-- Error Prone -->
-    <rule ref="category/java/errorprone.xml">
-        <exclude name="BeanMembersShouldSerialize"/>
-        <exclude name="DataflowAnomalyAnalysis"/>
-    </rule>
+    <rule ref="category/java/errorprone.xml"/>
 
     <!-- Performance -->
     <rule ref="category/java/performance.xml"/>

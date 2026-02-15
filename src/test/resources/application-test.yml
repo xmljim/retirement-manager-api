@@ -1,0 +1,20 @@
+# Test profile configuration - uses Hibernate to create schema instead of Flyway
+
+spring:
+  jpa:
+    hibernate:
+      # Let Hibernate create the schema for tests (Flyway for production)
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Disable Flyway for tests - use Hibernate schema generation
+  flyway:
+    enabled: false
+
+logging:
+  level:
+    com.xmljim.retirement: DEBUG
+    org.hibernate.SQL: DEBUG
